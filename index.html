@@ -39,6 +39,7 @@
   <h1>🌱 Smart Farming Dashboard</h1>
 
   <div class="container">
+
     <div class="card">
       <h2>🌡️ Temp</h2>
       <div id="temp" class="value">--</div>
@@ -58,17 +59,42 @@
       <h2>☀️ Light</h2>
       <div id="light" class="value">--</div>
     </div>
+
+    <div class="card">
+      <h2>🌧️ Rain</h2>
+      <div id="rain" class="value">--</div>
+    </div>
+
+    <div class="card">
+      <h2>🌡️ Soil Temp</h2>
+      <div id="soil_temp" class="value">--</div>
+    </div>
+
   </div>
 
   <script>
     async function fetchData() {
+
       const res = await fetch("https://smart-farm-api-mgdx.onrender.com/api");
       const data = await res.json();
 
-      document.getElementById("temp").innerText = data.temperature + " °C";
-      document.getElementById("hum").innerText = data.humidity + " %";
-      document.getElementById("soil").innerText = data.soil;
-      document.getElementById("light").innerText = data.light; // NEW
+      document.getElementById("temp").innerText =
+        data.temperature + " °C";
+
+      document.getElementById("hum").innerText =
+        data.humidity + " %";
+
+      document.getElementById("soil").innerText =
+        data.soil;
+
+      document.getElementById("light").innerText =
+        data.light;
+
+      document.getElementById("rain").innerText =
+        data.rain;
+
+      document.getElementById("soil_temp").innerText =
+        data.soil_temp + " °C";
     }
 
     setInterval(fetchData, 2000);
