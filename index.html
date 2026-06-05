@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Smart Farming Dashboard</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #0f172a;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 15px;
+      width: 200px;
+    }
+
+    .value {
+      font-size: 30px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🌱 Smart Farming Dashboard</h1>
+
+  <div class="container">
+    <div class="card">
+      <h2>🌡️ Temp</h2>
+      <div id="temp" class="value">--</div>
+    </div>
+
+    <div class="card">
+      <h2>💧 Humidity</h2>
+      <div id="hum" class="value">--</div>
+    </div>
+
+    <div class="card">
+      <h2>🌱 Soil</h2>
+      <div id="soil" class="value">--</div>
+    </div>
+
+    <div class="card">
+      <h2>☀️ Light</h2>
+      <div id="light" class="value">--</div>
+    </div>
+  </div>
+
+  <script>
+    async function fetchData() {
+      const res = await fetch("https://smart-farm-api-mgdx.onrender.com/api");
+      const data = await res.json();
+
+      document.getElementById("temp").innerText = data.temperature + " °C";
+      document.getElementById("hum").innerText = data.humidity + " %";
+      document.getElementById("soil").innerText = data.soil;
+      document.getElementById("light").innerText = data.light; // NEW
+    }
+
+    setInterval(fetchData, 2000);
+    fetchData();
+  </script>
+
+</body>
+
+</html>
