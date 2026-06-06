@@ -132,7 +132,7 @@
   <script>
 
     const SERVER =
-      "https://your-render-service.onrender.com";
+      "http://127.0.0.1:8000";
 
     async function fetchData() {
 
@@ -167,7 +167,7 @@
         data.soil_temp + " °C";
     }
 
- async function pumpOn() {
+async function pumpOn() {
 
   await fetch(
     SERVER + "/pump/on"
@@ -195,12 +195,12 @@ async function updatePumpStatus() {
   const data =
     await res.json();
 
-  document.getElementById(
-    "pumpStatus"
-  ).innerText =
-    data.pump
-      ? "Pump ON"
-      : "Pump OFF";
+document.getElementById(
+  "pumpStatus"
+).innerText =
+  data.pump
+    ? "Pump ON"
+    : "Pump OFF";
 }
     setInterval(fetchData, 2000);
     setInterval(updatePumpStatus, 2000);
