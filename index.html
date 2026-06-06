@@ -2,6 +2,7 @@
 <html>
 
 <head>
+
   <title>Smart Farming Dashboard</title>
 
   <style>
@@ -10,13 +11,18 @@
       background: #0f172a;
       color: white;
       text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 30px;
     }
 
     .container {
       display: flex;
       justify-content: center;
-      gap: 30px;
-      margin-top: 40px;
+      gap: 25px;
       flex-wrap: wrap;
     }
 
@@ -28,10 +34,43 @@
     }
 
     .value {
-      font-size: 30px;
+      font-size: 28px;
       margin-top: 10px;
     }
+
+    .pump-box {
+      margin-top: 40px;
+      background: #1e293b;
+      padding: 25px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 20px;
+      margin: 10px;
+      cursor: pointer;
+      border: none;
+      border-radius: 10px;
+    }
+
+    .on-btn {
+      background: green;
+      color: white;
+    }
+
+    .off-btn {
+      background: red;
+      color: white;
+    }
+
+    #pumpStatus {
+      font-size: 28px;
+      margin-top: 20px;
+    }
   </style>
+
 </head>
 
 <body>
@@ -72,33 +111,103 @@
 
   </div>
 
+  <div class="pump-box">
+
+    <h2>💧 Pump Controller</h2>
+
+    <button class="on-btn" onclick="pumpOn()">
+      ON
+    </button>
+
+    <button class="off-btn" onclick="pumpOff()">
+      OFF
+    </button>
+
+    <div id="pumpStatus">
+      Loading...
+    </div>
+
+  </div>
+
   <script>
+
+    const SERVER =
+      "https://your-render-service.onrender.com";
+
     async function fetchData() {
 
-      const res = await fetch("https://smart-farm-api-mgdx.onrender.com/api");
-      const data = await res.json();
+      const res =
+        await fetch(SERVER + "/api");
 
-      document.getElementById("temp").innerText =
+      const data =
+        await res.json();
+
+      document.getElementById("temp")
+        .innerText =
         data.temperature + " °C";
 
-      document.getElementById("hum").innerText =
+      document.getElementById("hum")
+        .innerText =
         data.humidity + " %";
 
-      document.getElementById("soil").innerText =
+      document.getElementById("soil")
+        .innerText =
         data.soil;
 
-      document.getElementById("light").innerText =
+      document.getElementById("light")
+        .innerText =
         data.light;
 
-      document.getElementById("rain").innerText =
+      document.getElementById("rain")
+        .innerText =
         data.rain;
 
-      document.getElementById("soil_temp").innerText =
+      document.getElementById("soil_temp")
+        .innerText =
         data.soil_temp + " °C";
     }
 
+ async function pumpOn() {
+
+  await fetch(
+    SERVER + "/pump/on"
+  );
+
+  updatePumpStatus();
+}
+
+async function pumpOff() {
+
+  await fetch(
+    SERVER + "/pump/off"
+  );
+
+  updatePumpStatus();
+}
+
+async function updatePumpStatus() {
+
+  const res =
+    await fetch(
+      SERVER + "/pump"
+    );
+
+  const data =
+    await res.json();
+
+  document.getElementById(
+    "pumpStatus"
+  ).innerText =
+    data.pump
+      ? "Pump ON"
+      : "Pump OFF";
+}
     setInterval(fetchData, 2000);
+    setInterval(updatePumpStatus, 2000);
+
     fetchData();
+    updatePumpStatus();
+
   </script>
 
 </body>
